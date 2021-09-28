@@ -24,8 +24,9 @@ ByteStream::ByteStream(const size_t capacity) {
 size_t ByteStream::write(const string &data) {
     // DUMMY_CODE(data);
     size_t temp = _buffer_size;
-    for(auto ch : data) {
-        if(temp == _capacity) break;
+    for (auto ch : data) {
+        if (temp == _capacity)
+            break;
         _buffer.emplace_back(ch);
         ++temp;
     }
@@ -46,7 +47,7 @@ string ByteStream::peek_output(const size_t len) const {
 
 //! \param[in] len bytes will be removed from the output side of the buffer
 void ByteStream::pop_output(const size_t len) {
-    for(size_t i = 0; i < len && _buffer_size > 0; i++){
+    for (size_t i = 0; i < len && _buffer_size > 0; i++) {
         ++_bytes_read;
         --_buffer_size;
         _buffer.pop_front();
