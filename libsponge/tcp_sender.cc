@@ -41,6 +41,9 @@ void TCPSender::fill_window() {
                 _timer = 0;
         }   
     }else{
+        if (!_stream.buffer_size() && !_stream.eof())
+        // Lab4 behavior: if incoming_seg.length_in_sequence_space() is not zero, send ack.
+        return;
         uint64_t remain = _window_size - bytes_in_flight();
         while (remain != 0 && !_fin_sent){
             remain = read_and_send(remain);
@@ -96,17 +99,21 @@ void TCPSender::ack_received(const WrappingInt32 ackno, const uint16_t window_si
         if(index + length - 1 <= _ack_seqno - 1) { _segments_not_ack.pop(); }
         else { break; } 
     }
+
+    _retransmission_timeout = _initial_retransmission_timeout;
+    _consecutive_retransmission = 0;
     
     if (!_segments_not_ack.empty()) {
         _time_running = true;
         _timer = 0;
     }
-    _retransmission_timeout = _initial_retransmission_timeout;
-    _consecutive_retransmission = 0;
+
+    fill_window();
  }
 
 //! \param[in] ms_since_last_tick the number of milliseconds since the last call to this method
 void TCPSender::tick(const size_t ms_since_last_tick) { 
+    if (!_time_running) return;
     _timer += ms_since_last_tick;
     if(_timer >= _retransmission_timeout && !_segments_not_ack.empty()){
         if(!_no_space_window) { _retransmission_timeout *= 2; }
