@@ -146,5 +146,6 @@ void TCPConnection::close(bool clear) {
         _receiver.stream_out().set_error();
         _sender.stream_in().set_error();
     }
+
     _active = false;
 }
