@@ -48,10 +48,9 @@ class TCPSender {
 
     //! retransmit
     uint32_t _consecutive_retransmissions{0};
-    
+
     size_t read_and_send(size_t window_size);
     void send_segment(TCPSegment &seg);
-
 
   public:
     //! Initialize a TCPSender

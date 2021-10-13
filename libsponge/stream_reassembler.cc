@@ -24,12 +24,16 @@ StreamReassembler::StreamReassembler(const size_t capacity) : _output(capacity),
 void StreamReassembler::push_substring(const string &data, const size_t index, const bool eof) {
     // max_index
     size_t max_index = _output.bytes_written() + _capacity - _output.buffer_size() - 1;
-    if (index > max_index) { return; }
+    if (index > max_index) {
+        return;
+    }
 
     // set data_node
     std::list<data_node>::iterator it = _buffer.begin();
-    if (index >= _output.bytes_written()) { advance(it, index - _output.bytes_written()); }
-    
+    if (index >= _output.bytes_written()) {
+        advance(it, index - _output.bytes_written());
+    }
+
     // empty eof
     if (data.size() == 0) {
         if (!eof)
@@ -52,7 +56,7 @@ void StreamReassembler::push_substring(const string &data, const size_t index, c
         it->_vaild = true;
         it++;
     }
-    
+
     // try to Reassemble and write
     it = _buffer.begin();
     string str_insert = "";
@@ -66,7 +70,9 @@ void StreamReassembler::push_substring(const string &data, const size_t index, c
 
     // update list
     size_t num = distance(_buffer.begin(), it);
-    for (size_t i = 0; i < num; i++) { _buffer.pop_front(); }
+    for (size_t i = 0; i < num; i++) {
+        _buffer.pop_front();
+    }
     _buffer.resize(_buffer.size() + num, data_node());
 }
 

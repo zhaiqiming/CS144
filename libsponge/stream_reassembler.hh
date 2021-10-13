@@ -6,18 +6,16 @@
 #include <cstdint>
 #include <string>
 
-
-
 //! \brief A class that assembles a series of excerpts from a byte stream (possibly out of order,
 //! possibly overlapping) into an in-order byte stream.
 class StreamReassembler {
   private:
     // Your code here -- add private members as necessary.
     struct data_node {
-      data_node() {}
-      char _ch{};
-      bool _eof{false};
-      bool _vaild{false};
+        data_node() {}
+        char _ch{};
+        bool _eof{false};
+        bool _vaild{false};
     };
     ByteStream _output;  //!< The reassembled in-order byte stream
     size_t _capacity;    //!< The maximum number of bytes
