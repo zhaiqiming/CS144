@@ -1,0 +1,45 @@
+Start testing: Oct 23 16:44 CST
+----------------------------------------------------------
+31/164 Testing: t_webget
+31/164 Test: t_webget
+Command: "/home/ubuntu/CS144/tests/webget_t.sh"
+Directory: /home/ubuntu/CS144/libsponge
+"t_webget" start time: Oct 23 16:44 CST
+Output:
+----------------------------------------------------------
+HTTP/1.1 200 OK
+Content-type: text/plain
+
+7SmXqWkrLKzVBCEalbSPqBcvs11Pw263K7x4Wv3JckI
+Function called: get_URL(cs144.keithw.org, /nph-hasher/xyzzy).
+Warning: get_URL() has not been implemented yet.
+<end of output>
+Test time =   1.01 sec
+----------------------------------------------------------
+Test Passed.
+"t_webget" end time: Oct 23 16:44 CST
+"t_webget" time elapsed: 00:00:01
+----------------------------------------------------------
+
+32/164 Testing: arp_network_interface
+32/164 Test: arp_network_interface
+Command: "/home/ubuntu/CS144/libsponge/tests/net_interface"
+Directory: /home/ubuntu/CS144/libsponge
+"arp_network_interface" start time: Oct 23 16:44 CST
+Output:
+----------------------------------------------------------
+DEBUG: Network interface has Ethernet address ae:98:cc:97:c5:7f and IP address 4.3.2.1
+DEBUG: Network interface has Ethernet address 02:9a:60:38:68:65 and IP address 5.5.5.5
+DEBUG: Network interface has Ethernet address 86:72:7d:6f:4f:59 and IP address 5.5.5.5
+DEBUG: Network interface has Ethernet address 32:06:d1:98:94:ce and IP address 1.2.3.4
+DEBUG: Network interface has Ethernet address 0a:27:ea:2c:75:1e and IP address 4.3.2.1
+DEBUG: Network interface has Ethernet address a6:8d:a8:94:08:fa and IP address 10.0.0.1
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"arp_network_interface" end time: Oct 23 16:44 CST
+"arp_network_interface" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Oct 23 16:44 CST
