@@ -29,14 +29,50 @@ void Router::add_route(const uint32_t route_prefix,
     cerr << "DEBUG: adding route " << Address::from_ipv4_numeric(route_prefix).ip() << "/" << int(prefix_length)
          << " => " << (next_hop.has_value() ? next_hop->ip() : "(direct)") << " on interface " << interface_num << "\n";
 
-    DUMMY_CODE(route_prefix, prefix_length, next_hop, interface_num);
-    // Your code here.
+    _dataItem.emplace_back(DataItem{route_prefix, prefix_length, next_hop, interface_num});
 }
 
 //! \param[in] dgram The datagram to be routed
 void Router::route_one_datagram(InternetDatagram &dgram) {
-    DUMMY_CODE(dgram);
-    // Your code here.
+    if (dgram.header().ttl <= 1) {
+        return;
+    }
+    dgram.header().ttl--;
+    // int tem = -1, temlen = -1;
+    DataItem target;
+    int match_length = -1;
+    const uint32_t dst = dgram.header().dst;
+    for(const auto item : _dataItem) {
+        if(item._prefix_length == 0 && match_length == -1) {
+            match_length = 0;
+            target = item;
+        } else if(dst >> (32 - item._prefix_length) == item._route_prefix >> (32 - item._prefix_length) && match_length < item._prefix_length) {
+            match_length = item._prefix_length;
+            target = item;
+        }
+    }
+    if(match_length == -1) {
+        return ;
+    }
+    if(target._next_hop != nullopt) {
+        interface(target._interface_num).send_datagram(dgram, *(target._next_hop));
+    } else {
+        interface(target._interface_num).send_datagram(dgram,  Address::from_ipv4_numeric(dst));
+    }
+    // for (long unsigned int i = 0; i < _dataItem.size(); i++) {
+    //     uint8_t rs = 32 - _pl[i];
+    //     if ((rs == 32 || dster >> rs == _rp[i] >> rs) && temlen < 32 - rs) {
+    //         temlen = 32 - rs;
+    //         tem = i;
+    //     }
+    // }
+    // if (tem < 0) {
+    //     return;
+    // }
+    // if (_nh[tem])
+    //     interface(_in[tem]).send_datagram(dgram, *(_nh[tem]));
+    // else
+    //     interface(_in[tem]).send_datagram(dgram, Address::from_ipv4_numeric(dster));
 }
 
 void Router::route() {
